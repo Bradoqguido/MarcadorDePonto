@@ -80,8 +80,6 @@ namespace WindowsFormsApp1
             }
 
             // verifica minutos
-            //01234
-            //12:30
             if (int.Parse(pHorario.Substring(3, 2)) > 59)
             {
                 blnHorarioErrado = true;
