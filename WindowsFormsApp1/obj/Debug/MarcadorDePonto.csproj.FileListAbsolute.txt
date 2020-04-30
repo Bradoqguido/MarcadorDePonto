@@ -1,0 +1,15 @@
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\MarcadorDePonto.exe.config
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\MarcadorDePonto.exe
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\MarcadorDePonto.pdb
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\StreamJsonRpc.dll
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\Microsoft.VisualStudio.Validation.dll
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\Microsoft.VisualStudio.Validation.xml
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\MarcadorDePonto.csprojAssemblyReference.cache
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Main.resources
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\MarcadorDePonto.Properties.Resources.resources
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\MarcadorDePonto.csproj.GenerateResource.cache
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\MarcadorDePonto.csproj.CoreCompileInputs.cache
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\MarcadorDePonto.csproj.CopyComplete
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\MarcadorDePonto.exe
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\MarcadorDePonto.pdb
