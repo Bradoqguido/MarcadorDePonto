@@ -20,6 +20,23 @@ namespace WindowsFormsApp1.Models
         private List<string> lstHorarios = new List<string>();
 
         /// <summary>
+        /// Variavel para armazenar os minutos de almoço
+        /// </summary>
+        private double dobMinutosAlmoco = 0;
+
+        
+
+        /// <summary>
+        /// Variavel para armazenar as horas extra
+        /// </summary>
+        private double dobHorasExtras = 0;
+
+        /// <summary>
+        /// Variavel para armazenar os minutos de horas extra
+        /// </summary>
+        private double dobMinutosExtras = 0;
+
+        /// <summary>
         /// Get/Set com o tipo data
         /// </summary>
         public DateTime Data
@@ -36,6 +53,36 @@ namespace WindowsFormsApp1.Models
         {
             set { lstHorarios.Add(value); }
             get { return lstHorarios.Last(); }
+        }
+
+        /// <summary>
+        /// Recebe quanto tempo de almoço
+        /// por dia trabalhado que o usuário fez
+        /// </summary>
+        public double HorasExtras
+        {
+            set { dobHorasExtras = value; }
+            get { return dobHorasExtras; }
+        }
+
+        /// <summary>
+        /// Recebe quanto tempo de almoço
+        /// por dia trabalhado que o usuário fez
+        /// </summary>
+        public double MinutosExtras
+        {
+            set { dobMinutosExtras = value; }
+            get { return dobMinutosExtras; }
+        }
+
+        /// <summary>
+        /// Recebe quanto tempo de almoço
+        /// por dia trabalhado que o usuário fez
+        /// </summary>
+        public double MinutosAlmoco
+        {
+            set { dobMinutosAlmoco = value; }
+            get { return dobMinutosAlmoco; }
         }
 
         /// <summary>

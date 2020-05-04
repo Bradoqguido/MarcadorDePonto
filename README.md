@@ -15,7 +15,9 @@ Sempre que a aplicação for aberta, ela irá verificar se existem registros do mes
 - [ ]  Deve ser possível ler os dados preenchidos em um json.
 - [ ]  Deve ser possível buscar no resultado do json o indíce que contem os dados de hoje.
 - [ ]  Deve ser possível atualizar os dados previamente salvos hoje, a qualquer momento do dia.
-- [ ]  O usuário pode cancelar a ação de inserir uma hora.
 - [ ]  Verificar se a hora digitada pelo usuário é compatível com o formato Hh:Mm.
 - [ ]  A aplicação deve ter uma lista com os caracteres aceitos.
 - [ ]  A aplicação deve exibir uma janela possibilitando o usuário inserir dados.
+- [ ]  O usuário pode cancelar a ação de inserir uma hora.
+- [ ]  Precisa ter uma função para somar as horas extras.
+- [ ]  Exibir um relatório com todas as horas extras do dia.

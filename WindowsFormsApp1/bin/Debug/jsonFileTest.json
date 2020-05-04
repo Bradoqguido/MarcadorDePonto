@@ -2,8 +2,10 @@
   {
     "Data": "2020-04-29T00:00:00-03:00",
     "LastHorarioRegistrado": "18:04",
+    "HorasExtras": 0.0,
+    "MinutosExtras": 0.0,
+    "MinutosAlmoco": 0.0,
     "Horarios": [
-      "18:04",
       "07:42",
       "12:06",
       "13:31",
@@ -12,35 +14,43 @@
   },
   {
     "Data": "2020-04-30T00:00:00-03:00",
-    "LastHorarioRegistrado": "13:10",
+    "LastHorarioRegistrado": "18:08",
+    "HorasExtras": 0.0,
+    "MinutosExtras": 0.0,
+    "MinutosAlmoco": 0.0,
     "Horarios": [
       "07:38",
       "08:37",
       "11:04",
       "12:03",
-      "13:10"
+      "13:10",
+      "18:08"
     ]
   },
   {
-    "Data": "2020-04-30T00:00:00-03:00",
-    "LastHorarioRegistrado": "13:10",
+    "Data": "2020-05-04T00:00:00-03:00",
+    "LastHorarioRegistrado": "13:30",
+    "HorasExtras": -4.0,
+    "MinutosExtras": -255.0,
+    "MinutosAlmoco": 0.0,
     "Horarios": [
-      "07:38",
-      "08:37",
-      "11:04",
-      "12:03",
-      "13:10"
+      "13:30",
+      "07:42",
+      "12:15",
+      "13:30"
     ]
   },
   {
-    "Data": "2020-04-30T00:00:00-03:00",
-    "LastHorarioRegistrado": "13:10",
+    "Data": "2020-05-05T00:00:00-03:00",
+    "LastHorarioRegistrado": "17:40",
+    "HorasExtras": 0.0,
+    "MinutosExtras": 0.0,
+    "MinutosAlmoco": 0.0,
     "Horarios": [
-      "07:38",
-      "08:37",
-      "11:04",
-      "12:03",
-      "13:10"
+      "08:00",
+      "12:00",
+      "13:01",
+      "17:40"
     ]
   }
 ]

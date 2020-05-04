@@ -31,11 +31,12 @@
             this.btnBaterPonto = new System.Windows.Forms.Button();
             this.btnSalvar = new System.Windows.Forms.Button();
             this.btnSair = new System.Windows.Forms.Button();
+            this.HorasExtraDoDia = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnBaterPonto
             // 
-            this.btnBaterPonto.Location = new System.Drawing.Point(49, 12);
+            this.btnBaterPonto.Location = new System.Drawing.Point(101, 12);
             this.btnBaterPonto.Name = "btnBaterPonto";
             this.btnBaterPonto.Size = new System.Drawing.Size(96, 23);
             this.btnBaterPonto.TabIndex = 1;
@@ -45,17 +46,17 @@
             // 
             // btnSalvar
             // 
-            this.btnSalvar.Location = new System.Drawing.Point(58, 41);
+            this.btnSalvar.Location = new System.Drawing.Point(81, 41);
             this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(75, 23);
+            this.btnSalvar.Size = new System.Drawing.Size(138, 23);
             this.btnSalvar.TabIndex = 3;
-            this.btnSalvar.Text = "Salvar";
+            this.btnSalvar.Text = "Salvar em formato JSON";
             this.btnSalvar.UseVisualStyleBackColor = true;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
             // 
             // btnSair
             // 
-            this.btnSair.Location = new System.Drawing.Point(58, 70);
+            this.btnSair.Location = new System.Drawing.Point(110, 98);
             this.btnSair.Name = "btnSair";
             this.btnSair.Size = new System.Drawing.Size(75, 23);
             this.btnSair.TabIndex = 4;
@@ -63,11 +64,22 @@
             this.btnSair.UseVisualStyleBackColor = true;
             this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
+            // HorasExtraDoDia
+            // 
+            this.HorasExtraDoDia.Location = new System.Drawing.Point(91, 70);
+            this.HorasExtraDoDia.Name = "HorasExtraDoDia";
+            this.HorasExtraDoDia.Size = new System.Drawing.Size(117, 23);
+            this.HorasExtraDoDia.TabIndex = 5;
+            this.HorasExtraDoDia.Text = "Horas extra do dia";
+            this.HorasExtraDoDia.UseVisualStyleBackColor = true;
+            this.HorasExtraDoDia.Click += new System.EventHandler(this.btnHorasExtrasDoDia_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(197, 112);
+            this.ClientSize = new System.Drawing.Size(291, 133);
+            this.Controls.Add(this.HorasExtraDoDia);
             this.Controls.Add(this.btnSair);
             this.Controls.Add(this.btnSalvar);
             this.Controls.Add(this.btnBaterPonto);
@@ -82,6 +94,7 @@
         private System.Windows.Forms.Button btnBaterPonto;
         private System.Windows.Forms.Button btnSalvar;
         private System.Windows.Forms.Button btnSair;
+        private System.Windows.Forms.Button HorasExtraDoDia;
     }
 }
 
