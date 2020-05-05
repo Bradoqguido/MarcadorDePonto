@@ -489,62 +489,8 @@ namespace MarcadorDePonto.Controllers
             {
                 stbBuilder.Append(pArr[intI] + " - " + pArr[intI + 1] + "\n");
             }
-
-
+            
             return stbBuilder.ToString();
         }
     }
 }
-
-//[
-//  {
-//    "Data": "2020-04-29T00:00:00-03:00",
-//    "HorasExtras": 0.0,
-//    "MinutosExtras": 0.0,
-//    "MinutosAlmoco": 85.0,
-//    "Horarios": [
-//      "07:42",
-//      "12:06",
-//      "13:31",
-//      "18:04"
-//    ]
-//  },
-//  {
-//    "Data": "2020-04-30T00:00:00-03:00",,
-//    "HorasExtras": -2.0,
-//    "MinutosExtras": 52.0,
-//    "MinutosAlmoco": 67.0,
-//    "Horarios": [
-//      "07:38",
-//      "08:37",
-//      "11:04",
-//      "12:03",
-//      "13:10",
-//      "18:08"
-//    ]
-//  },
-//  {
-//    "Data": "2020-05-04T00:00:00-03:00",
-//    "HorasExtras": 0.0,
-//    "MinutosExtras": 21.0,
-//    "MinutosAlmoco": 75.0,
-//    "Horarios": [
-//      "07:40",
-//      "12:15",
-//      "13:30",
-//      "18:04"
-//    ]
-//  }
-//]
-
-
-//  {
-//    "Data": "2020-05-05T00:00:00-03:00",
-//    "LastHorarioRegistrado": "17:40",
-//    "Horarios": [
-//      "08:00",
-//      "12:00",
-//      "13:01",
-//      "17:40"
-//   ]
-// }
