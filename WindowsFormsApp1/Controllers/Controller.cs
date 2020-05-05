@@ -153,22 +153,24 @@ namespace MarcadorDePonto.Controllers
                 return;
             }
 
-            bool blnHorarioErrado = false;
+            bool blnHorarioErrado = true;
 
-            blnHorarioErrado = VerifyAceptedChars(pHorario);
-
-            // adiciona 0 na frente da hora se tiver só um número
-            if (pHorario.Substring(0, 2).Contains(":"))
+            if (!VerifyAceptedChars(pHorario))
             {
-                pHorario = ("0" + pHorario);
+                // adiciona 0 na frente da hora se tiver só um número
+                if (pHorario.Substring(0, 2).Contains(":"))
+                {
+                    pHorario = ("0" + pHorario);
+                }
+
+                if (!pHorario.Contains(":"))
+                {
+                    blnHorarioErrado = true;
+                }
+
+                blnHorarioErrado = VerifyTime(pHorario);
             }
 
-            if (!pHorario.Contains(":"))
-            {
-                blnHorarioErrado = true;
-            }
-
-            blnHorarioErrado = VerifyTime(pHorario);
             VerifyIfTimeIsOk(blnHorarioErrado, pHorario);
         }
 
@@ -202,13 +204,24 @@ namespace MarcadorDePonto.Controllers
         private bool VerifyTime(string pHorario)
         {
             // verifica hora
-            if (int.Parse(pHorario.Substring(0, 2)) > 23)
+            int intHora = 0;
+            if (!int.TryParse(pHorario.Substring(0, 2), out intHora)) {
+                return true;
+            }
+
+            if (intHora > 23)
             {
                 return true;
             }
 
             // verifica minutos
-            if (int.Parse(pHorario.Substring(3, 2)) > 59)
+            int intMinuto = 0;
+            if (!int.TryParse(pHorario.Substring(3, 2), out intMinuto))
+            {
+                return true;
+            }
+
+            if (intMinuto > 59)
             {
                 return true;
             }
@@ -300,80 +313,6 @@ namespace MarcadorDePonto.Controllers
         }
 
         /// <summary>
-        /// Soma as horas extras do dia.
-        /// </summary>
-        private void SomarHorasAlmocoEextrasPorDia()
-        {
-            int intRegistros = objPonto.Horarios.Count;
-            if (!VerificaPar(intRegistros))
-            {
-                intRegistros--;
-            }
-
-            // Soma todos os minutos extras
-            int intSomaMinutosExtras = 0;
-            for (int intI = 0; intI < intRegistros; intI += 2)
-            {
-                intSomaMinutosExtras += SubtrairHoras(objPonto.Horarios[intI].ToString(), objPonto.Horarios[intI + 1].ToString());
-            }
-
-            AjusteHorario(intSomaMinutosExtras);
-
-            // Pega as horas do almoço
-            objPonto.MinutosAlmoco = EncontraAlmoco();
-        }
-
-        /// <summary>
-        /// Ajusta as horas, subtraindo as horas restantes da variável
-        /// </summary>
-        /// <param name="pIntSomaMinutosExtras">Variável do tipo inteiro</param>
-        private void AjusteHorario(int pIntSomaMinutosExtras)
-        {
-            // Remove as horas de trabalho normais (528 minutos)
-            objPonto.MinutosExtras = pIntSomaMinutosExtras -= 528;
-
-            // Trata os 10 minutos de sobra
-            if (pIntSomaMinutosExtras >= -10 && pIntSomaMinutosExtras <= 10)
-            {
-                objPonto.MinutosExtras = 0;
-            }
-
-            // Pega as hora horas extras
-            objPonto.HorasExtras = (pIntSomaMinutosExtras / 60);
-
-            // 112 minutos são divisiveis por 60, mas não cabem em uma variável do tipo inteiro
-            // Caso positivo
-            if (pIntSomaMinutosExtras > 0 && pIntSomaMinutosExtras < 120)
-            {
-                pIntSomaMinutosExtras = pIntSomaMinutosExtras - 60; // Remove uma hora dos minutos
-                objPonto.MinutosExtras = pIntSomaMinutosExtras;
-                objPonto.HorasExtras += 1; // Adiciona uma hora
-            }
-
-            // Caso negativo
-            if (pIntSomaMinutosExtras > -120 && pIntSomaMinutosExtras < 0)
-            {
-                pIntSomaMinutosExtras = pIntSomaMinutosExtras + 60; // Remove uma hora dos minutos
-                objPonto.MinutosExtras = (pIntSomaMinutosExtras * -1);
-                objPonto.HorasExtras -= 1; // Remove uma hora
-            }
-        }
-
-        /// <summary>
-        /// Verifica se o número é par.
-        /// </summary>
-        /// <param name="pNumero">Número inteiro</param>
-        /// <returns>Retorna true seo número for par</returns>
-        public bool VerificaPar(int pNumero)
-        {
-            if (pNumero % 2 == 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
         /// Função que subtrai uma hora inicial em uma final.
         /// </summary>
         /// <param name="pHoraInicio">Hora que será subtraida na final</param>
@@ -456,6 +395,87 @@ namespace MarcadorDePonto.Controllers
         }
 
         /// <summary>
+        /// Soma as horas extras do dia.
+        /// </summary>
+        private void SomarHorasAlmocoEextrasPorDia()
+        {
+            int intRegistros = objPonto.Horarios.Count;
+            if (!VerificaPar(intRegistros))
+            {
+                intRegistros--;
+            }
+
+            // Soma todos os minutos extras
+            int intSomaMinutosExtras = 0;
+            for (int intI = 0; intI < intRegistros; intI += 2)
+            {
+                intSomaMinutosExtras += SubtrairHoras(objPonto.Horarios[intI].ToString(), objPonto.Horarios[intI + 1].ToString());
+            }
+
+            AjusteHorario(intSomaMinutosExtras);
+
+            // Pega as horas do almoço
+            objPonto.MinutosAlmoco = EncontraAlmoco();
+        }
+
+        /// <summary>
+        /// Verifica se o número é par.
+        /// </summary>
+        /// <param name="pNumero">Número inteiro</param>
+        /// <returns>Retorna true seo número for par</returns>
+        public bool VerificaPar(int pNumero)
+        {
+            if (pNumero % 2 == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Ajusta as horas, subtraindo as horas restantes da variável
+        /// </summary>
+        /// <param name="pIntSomaMinutosExtras">Variável do tipo inteiro</param>
+        private void AjusteHorario(int pIntSomaMinutosExtras)
+        {
+            // Remove as horas de trabalho normais (528 minutos)
+            if (pIntSomaMinutosExtras > 0)
+            {
+                objPonto.MinutosExtras = pIntSomaMinutosExtras -= 528;
+            }
+            else
+            {
+                objPonto.MinutosExtras = pIntSomaMinutosExtras += 528;
+            }
+
+            // Trata os 10 minutos de sobra
+            if (pIntSomaMinutosExtras >= -10 && pIntSomaMinutosExtras <= 10)
+            {
+                objPonto.MinutosExtras = 0;
+            }
+
+            // Pega as hora horas extras
+            objPonto.HorasExtras = (pIntSomaMinutosExtras / 60);
+
+            // 112 minutos são divisiveis por 60, mas não cabem em uma variável do tipo inteiro
+            // Caso positivo
+            if (pIntSomaMinutosExtras > 0 && pIntSomaMinutosExtras < 120)
+            {
+                pIntSomaMinutosExtras = pIntSomaMinutosExtras - 60; // Remove uma hora dos minutos
+                objPonto.MinutosExtras = pIntSomaMinutosExtras;
+                objPonto.HorasExtras += 1; // Adiciona uma hora
+            }
+
+            // Caso negativo
+            if (pIntSomaMinutosExtras > -120 && pIntSomaMinutosExtras < 0)
+            {
+                pIntSomaMinutosExtras = pIntSomaMinutosExtras + 60; // Remove uma hora dos minutos
+                objPonto.MinutosExtras = (pIntSomaMinutosExtras * -1);
+                objPonto.HorasExtras -= 1; // Remove uma hora
+            }
+        }
+
+        /// <summary>
         /// Essa função monta uma string com as horas
         /// no formato "entrada - saida"
         /// </summary>
@@ -490,7 +510,10 @@ namespace MarcadorDePonto.Controllers
 //    ]
 //  },
 //  {
-//    "Data": "2020-04-30T00:00:00-03:00",
+//    "Data": "2020-04-30T00:00:00-03:00",,
+//    "HorasExtras": -2.0,
+//    "MinutosExtras": 52.0,
+//    "MinutosAlmoco": 67.0,
 //    "Horarios": [
 //      "07:38",
 //      "08:37",
