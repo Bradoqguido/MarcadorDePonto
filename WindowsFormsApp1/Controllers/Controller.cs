@@ -23,7 +23,7 @@ namespace MarcadorDePonto.Controllers
 
         /// <summary>
         /// Lista string de caracteres liberados, ou seja:
-        /// 12:00 - 07:42 = 258 minutos,
+        /// 07:42 - 12:00 = 258 minutos,
         /// 12:00 - 13:00 = 60 minutos,
         /// 12:00 - 13:30 = 90 minutos,
         /// 13:30 - 18:00 = 270 minutos.
@@ -443,10 +443,6 @@ namespace MarcadorDePonto.Controllers
             {
                 objPonto.MinutosExtras = pIntSomaMinutosExtras -= 528;
             }
-            else
-            {
-                objPonto.MinutosExtras = pIntSomaMinutosExtras += 528;
-            }
 
             // Trata os 10 minutos de sobra
             if (pIntSomaMinutosExtras >= -10 && pIntSomaMinutosExtras <= 10)
@@ -484,8 +480,14 @@ namespace MarcadorDePonto.Controllers
         public string MontarHorarioEntradaSaida(List<string> pArr)
         {
             StringBuilder stbBuilder = new StringBuilder();
-            
-            for (int intI = 0; intI < pArr.Count; intI+=2)
+
+            int intNRegistros = pArr.Count;
+            if (!VerificaPar(pArr.Count))
+            {
+                intNRegistros--;
+            }
+
+            for (int intI = 0; intI < intNRegistros; intI+=2)
             {
                 stbBuilder.Append(pArr[intI] + " - " + pArr[intI + 1] + "\n");
             }
