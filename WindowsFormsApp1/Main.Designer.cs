@@ -31,7 +31,7 @@
             this.btnBaterPonto = new System.Windows.Forms.Button();
             this.btnSalvar = new System.Windows.Forms.Button();
             this.btnSair = new System.Windows.Forms.Button();
-            this.HorasExtraDoDia = new System.Windows.Forms.Button();
+            this.btnHorasExtraDoDia = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnBaterPonto
@@ -64,22 +64,22 @@
             this.btnSair.UseVisualStyleBackColor = true;
             this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
-            // HorasExtraDoDia
+            // btnHorasExtraDoDia
             // 
-            this.HorasExtraDoDia.Location = new System.Drawing.Point(91, 70);
-            this.HorasExtraDoDia.Name = "HorasExtraDoDia";
-            this.HorasExtraDoDia.Size = new System.Drawing.Size(117, 23);
-            this.HorasExtraDoDia.TabIndex = 5;
-            this.HorasExtraDoDia.Text = "Horas extra do dia";
-            this.HorasExtraDoDia.UseVisualStyleBackColor = true;
-            this.HorasExtraDoDia.Click += new System.EventHandler(this.btnHorasExtrasDoDia_Click);
+            this.btnHorasExtraDoDia.Location = new System.Drawing.Point(91, 70);
+            this.btnHorasExtraDoDia.Name = "btnHorasExtraDoDia";
+            this.btnHorasExtraDoDia.Size = new System.Drawing.Size(117, 23);
+            this.btnHorasExtraDoDia.TabIndex = 5;
+            this.btnHorasExtraDoDia.Text = "Horas extra do dia";
+            this.btnHorasExtraDoDia.UseVisualStyleBackColor = true;
+            this.btnHorasExtraDoDia.Click += new System.EventHandler(this.btnHorasExtrasDoDia_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(291, 133);
-            this.Controls.Add(this.HorasExtraDoDia);
+            this.Controls.Add(this.btnHorasExtraDoDia);
             this.Controls.Add(this.btnSair);
             this.Controls.Add(this.btnSalvar);
             this.Controls.Add(this.btnBaterPonto);
@@ -94,7 +94,7 @@
         private System.Windows.Forms.Button btnBaterPonto;
         private System.Windows.Forms.Button btnSalvar;
         private System.Windows.Forms.Button btnSair;
-        private System.Windows.Forms.Button HorasExtraDoDia;
+        private System.Windows.Forms.Button btnHorasExtraDoDia;
     }
 }
 

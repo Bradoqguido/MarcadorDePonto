@@ -55,7 +55,6 @@ namespace WindowsFormsApp1
         /// <param name="e">Parametro de envento</param>
         private void btnHorasExtrasDoDia_Click(object sender, EventArgs e)
         {
-            objController.SomarHorasAlmocoEextrasPorDia();
             objController.ExibirRelatorioDoDia();
         }
     }

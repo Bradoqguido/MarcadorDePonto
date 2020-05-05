@@ -251,6 +251,7 @@ namespace MarcadorDePonto.Controllers
             InputTimeIfDontHaveOne();
             VerificaSeExisteADataDeHoje();
             SaveDataToJson();
+            ShowInfoMessageBox("Seus registros foram salvos com sucesso!", "Sucesso");
         }
 
         /// <summary>
@@ -301,14 +302,8 @@ namespace MarcadorDePonto.Controllers
         /// <summary>
         /// Soma as horas extras do dia.
         /// </summary>
-        public void SomarHorasAlmocoEextrasPorDia()
+        private void SomarHorasAlmocoEextrasPorDia()
         {
-            if (lstPonto.Count < 2)
-            {
-                ShowInfoMessageBox("Existe apenas uma hora registrada ainda hoje, registre mais para ", "");
-                return;
-            }
-
             int intRegistros = objPonto.Horarios.Count;
             if (!VerificaPar(intRegistros))
             {
@@ -322,19 +317,46 @@ namespace MarcadorDePonto.Controllers
                 intSomaMinutosExtras += SubtrairHoras(objPonto.Horarios[intI].ToString(), objPonto.Horarios[intI + 1].ToString());
             }
 
-            objPonto.MinutosExtras = intSomaMinutosExtras -= 528;
-
-            // Trata os 10 minutos de sobra
-            if (intSomaMinutosExtras >= -10 && intSomaMinutosExtras <= 10)
-            {
-                objPonto.MinutosExtras = intSomaMinutosExtras = 0;
-            }
-
-            // Pega as hora horas extras
-            objPonto.HorasExtras = (intSomaMinutosExtras / 60);
+            AjusteHorario(intSomaMinutosExtras);
 
             // Pega as horas do almoço
             objPonto.MinutosAlmoco = EncontraAlmoco();
+        }
+
+        /// <summary>
+        /// Ajusta as horas, subtraindo as horas restantes da variável
+        /// </summary>
+        /// <param name="pIntSomaMinutosExtras">Variável do tipo inteiro</param>
+        private void AjusteHorario(int pIntSomaMinutosExtras)
+        {
+            // Remove as horas de trabalho normais (528 minutos)
+            objPonto.MinutosExtras = pIntSomaMinutosExtras -= 528;
+
+            // Trata os 10 minutos de sobra
+            if (pIntSomaMinutosExtras >= -10 && pIntSomaMinutosExtras <= 10)
+            {
+                objPonto.MinutosExtras = 0;
+            }
+
+            // Pega as hora horas extras
+            objPonto.HorasExtras = (pIntSomaMinutosExtras / 60);
+
+            // 112 minutos são divisiveis por 60, mas não cabem em uma variável do tipo inteiro
+            // Caso positivo
+            if (pIntSomaMinutosExtras > 0 && pIntSomaMinutosExtras < 120)
+            {
+                pIntSomaMinutosExtras = pIntSomaMinutosExtras - 60; // Remove uma hora dos minutos
+                objPonto.MinutosExtras = pIntSomaMinutosExtras;
+                objPonto.HorasExtras += 1; // Adiciona uma hora
+            }
+
+            // Caso negativo
+            if (pIntSomaMinutosExtras > -120 && pIntSomaMinutosExtras < 0)
+            {
+                pIntSomaMinutosExtras = pIntSomaMinutosExtras + 60; // Remove uma hora dos minutos
+                objPonto.MinutosExtras = (pIntSomaMinutosExtras * -1);
+                objPonto.HorasExtras -= 1; // Remove uma hora
+            }
         }
 
         /// <summary>
@@ -388,28 +410,49 @@ namespace MarcadorDePonto.Controllers
         /// </summary>
         public void ExibirRelatorioDoDia()
         {
-            StringBuilder stbConteudoMsg = new StringBuilder();
-
-            stbConteudoMsg.Append("Registros:\n" + MontarHorarioEntradaSaida(objPonto.Horarios));
-
-            stbConteudoMsg.Append("\nHoras extras: " + objPonto.HorasExtras.ToString() + ":");
-            stbConteudoMsg.Append(objPonto.MinutosExtras.ToString() + "h");
-
-            int intHorasAlmoco = (int) (objPonto.MinutosAlmoco / 60);
-            int intMinutosAlmoco = (int) (objPonto.MinutosAlmoco % 60);
-
-            stbConteudoMsg.Append("\nSeu almoço durou: " + intHorasAlmoco.ToString() + ":");
-            stbConteudoMsg.Append(intMinutosAlmoco.ToString() + "h");
-
-            if (objPonto.MinutosAlmoco < 60)
+            if (objPonto.Horarios.Count < 2)
             {
-                stbConteudoMsg.Append("\nO almoço deve ser de no minimo 60 minutos.");
-                stbConteudoMsg.Append("\n12:00 até 13:00 = 60 minutos");
-                stbConteudoMsg.Append("\nO almoço deve ser de no maximo 90 minutos.");
-                stbConteudoMsg.Append("\n12:00 até 13:30 = 90 minutos");
-            }
+                ShowInfoMessageBox("Existe apenas uma hora registrada ainda hoje, registre mais pontos, para gerar o relatório do dia!", "Info");
+            } else
+            {
+                SomarHorasAlmocoEextrasPorDia();
+                StringBuilder stbConteudoMsg = new StringBuilder();
 
-            ShowInfoMessageBox(stbConteudoMsg.ToString(), "Horas extras do dia");
+                stbConteudoMsg.Append("Registros:\n" + MontarHorarioEntradaSaida(objPonto.Horarios));
+
+                stbConteudoMsg.Append("\nHoras extras: " + objPonto.HorasExtras.ToString() + ":");
+                stbConteudoMsg.Append(objPonto.MinutosExtras.ToString() + "h");
+                
+                int intHorasAlmoco = (int)(objPonto.MinutosAlmoco / 60);
+                int intMinutosAlmoco = (int)(objPonto.MinutosAlmoco % 60);
+
+                if (intHorasAlmoco.ToString().Length < 2)
+                {
+                    stbConteudoMsg.Append("\nSeu almoço durou: 0" + intHorasAlmoco.ToString() + ":");
+                }
+                else
+                {
+                    stbConteudoMsg.Append("\nSeu almoço durou: " + intHorasAlmoco.ToString() + ":");
+                }
+
+                if (intMinutosAlmoco.ToString().Length < 2)
+                {
+                    stbConteudoMsg.Append("0" + intMinutosAlmoco.ToString() + "h");
+                } else
+                {
+                    stbConteudoMsg.Append(intMinutosAlmoco.ToString() + "h");
+                }
+
+                if (objPonto.MinutosAlmoco < 60)
+                {
+                    stbConteudoMsg.Append("\nO almoço deve ser de no minimo 60 minutos.");
+                    stbConteudoMsg.Append("\n12:00 até 13:00 = 60 minutos");
+                    stbConteudoMsg.Append("\nO almoço deve ser de no maximo 90 minutos.");
+                    stbConteudoMsg.Append("\n12:00 até 13:30 = 90 minutos");
+                }
+
+                ShowInfoMessageBox(stbConteudoMsg.ToString(), "Horas extras do dia");
+            }
         }
 
         /// <summary>
@@ -436,7 +479,9 @@ namespace MarcadorDePonto.Controllers
 //[
 //  {
 //    "Data": "2020-04-29T00:00:00-03:00",
-//    "LastHorarioRegistrado": "18:04",
+//    "HorasExtras": 0.0,
+//    "MinutosExtras": 0.0,
+//    "MinutosAlmoco": 85.0,
 //    "Horarios": [
 //      "07:42",
 //      "12:06",
@@ -446,7 +491,6 @@ namespace MarcadorDePonto.Controllers
 //  },
 //  {
 //    "Data": "2020-04-30T00:00:00-03:00",
-//    "LastHorarioRegistrado": "18:08",
 //    "Horarios": [
 //      "07:38",
 //      "08:37",
@@ -458,21 +502,26 @@ namespace MarcadorDePonto.Controllers
 //  },
 //  {
 //    "Data": "2020-05-04T00:00:00-03:00",
-//    "LastHorarioRegistrado": "13:30",
+//    "HorasExtras": 0.0,
+//    "MinutosExtras": 21.0,
+//    "MinutosAlmoco": 75.0,
 //    "Horarios": [
 //      "07:40",
 //      "12:15",
-//      "13:30"
+//      "13:30",
+//      "18:04"
 //    ]
-//  },
-//{
-//  "Data": "2020-05-05T00:00:00-03:00",
-//  "LastHorarioRegistrado": "17:40",
-//  "Horarios": [
-//    "08:00",
-//    "12:00",
-//    "13:01",
-//    "17:40"
-//  ]
-//}
+//  }
 //]
+
+
+//  {
+//    "Data": "2020-05-05T00:00:00-03:00",
+//    "LastHorarioRegistrado": "17:40",
+//    "Horarios": [
+//      "08:00",
+//      "12:00",
+//      "13:01",
+//      "17:40"
+//   ]
+// }
