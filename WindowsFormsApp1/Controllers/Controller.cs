@@ -102,20 +102,14 @@ namespace MarcadorDePonto.Controllers
         public string ShowInputBox(string pTitleText, string pDescText)
         {
             string strAux = Interaction.InputBox(pDescText, (pTitleText), "");
-
             if (strAux != null)
             {
                 if (strAux.Length > 0)
                 {
                     return strAux;
                 }
-                else
-                {
-                    return DateAndTime.TimeString;
-                }
             }
-
-            return DateAndTime.TimeString;
+            return strAux;
         }
 
         /// <summary>
@@ -169,7 +163,7 @@ namespace MarcadorDePonto.Controllers
                 pHorario = ("0" + pHorario);
             }
 
-            if (pHorario.IndexOf(":") != 2)
+            if (!pHorario.Contains(":"))
             {
                 blnHorarioErrado = true;
             }
@@ -244,7 +238,7 @@ namespace MarcadorDePonto.Controllers
             }
             else
             {
-                objPonto.LastHorarioRegistrado = pHorario;
+                objPonto.Horarios.Add(pHorario);
             }
         }
 
@@ -256,7 +250,6 @@ namespace MarcadorDePonto.Controllers
             objPonto.Data = DateTime.Today;
             InputTimeIfDontHaveOne();
             VerificaSeExisteADataDeHoje();
-            VerificarHorasDuplicados();
             SaveDataToJson();
         }
 
@@ -368,14 +361,7 @@ namespace MarcadorDePonto.Controllers
         {
             DateTime dtaHora1 = DateTime.Parse(pHoraInicio);
             DateTime dtaHora2 = DateTime.Parse(pHoraFim);
-
-            int intMinutos = int.Parse((dtaHora2.Subtract(dtaHora1).TotalMinutes).ToString());
-            if (-528 < intMinutos)
-            {
-                intMinutos = int.Parse((dtaHora1.Subtract(dtaHora2).TotalMinutes).ToString());
-            }
-
-            return intMinutos;
+            return int.Parse((dtaHora2.Subtract(dtaHora1).TotalMinutes).ToString());
         }
 
         /// <summary>
@@ -386,9 +372,12 @@ namespace MarcadorDePonto.Controllers
         private int EncontraAlmoco()
         {
             // pega a primeira hora após o almoço
-            // int intIndexFimHoraAlmoco = objPonto.Horarios.FindIndex(e => e.Contains("13:"));
-            int intIndexFimHoraAlmoco = objPonto.Horarios.FindLastIndex(e => e.Contains("12:"));
-            return SubtrairHoras(objPonto.Horarios[intIndexFimHoraAlmoco], objPonto.Horarios[intIndexFimHoraAlmoco]);
+            int intIndexFimHoraAlmoco = objPonto.Horarios.FindIndex(e => e.Contains("13:"));
+            if (intIndexFimHoraAlmoco > -1)
+            {
+                return SubtrairHoras(objPonto.Horarios[intIndexFimHoraAlmoco - 1], objPonto.Horarios[intIndexFimHoraAlmoco]);
+            }
+            return 0;
             
         }
 
@@ -413,26 +402,8 @@ namespace MarcadorDePonto.Controllers
                 stbConteudoMsg.Append("\nO almoço deve ser de no maximo 90 minutos.");
                 stbConteudoMsg.Append("\n12:00 até 13:30 = 90 minutos");
             }
-            ShowInfoMessageBox(stbConteudoMsg.ToString(), "Horas Extras");
+            ShowInfoMessageBox(stbConteudoMsg.ToString(), "Horas extras do dia");
         }
-
-        /// <summary>
-        /// Verifica se na lista lstPonto existem dados que duplicaram,
-        /// ou seja, que estava no campo LastHorarioRegistrado
-        /// e foi ao primeiro indice da lista
-        /// </summary>
-        private void VerificarHorasDuplicados()
-        {
-            foreach (Ponto objPonto in lstPonto)
-            {
-                int intIndexHoraDuplicada = objPonto.Horarios.FindIndex(h => h.Equals(objPonto.LastHorarioRegistrado));
-                if (intIndexHoraDuplicada > -1)
-                {
-                    objPonto.Horarios.RemoveAt(intIndexHoraDuplicada);
-                }
-            }
-        }
-    }
 }
 
 //[

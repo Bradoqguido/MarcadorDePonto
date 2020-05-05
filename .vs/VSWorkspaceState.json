@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\WindowsFormsApp1"
+    "\\WindowsFormsApp1",
+    "\\WindowsFormsApp1\\Controllers",
+    "\\WindowsFormsApp1\\Models"
   ],
-  "SelectedNode": "\\WindowsFormsApp1\\Main.cs",
+  "SelectedNode": "\\WindowsFormsApp1\\Controllers\\Controller.cs",
   "PreviewInSolutionExplorer": false
 }

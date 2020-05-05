@@ -24,8 +24,6 @@ namespace WindowsFormsApp1.Models
         /// </summary>
         private double dobMinutosAlmoco = 0;
 
-        
-
         /// <summary>
         /// Variavel para armazenar as horas extra
         /// </summary>
@@ -43,16 +41,6 @@ namespace WindowsFormsApp1.Models
         {
             set { dtaData = value; }
             get { return dtaData; }
-        }
-
-        /// <summary>
-        /// Insere horarios na lista
-        /// e sempre retorna o ultimo item adicionado
-        /// </summary>
-        public string LastHorarioRegistrado
-        {
-            set { lstHorarios.Add(value); }
-            get { return lstHorarios.Last(); }
         }
 
         /// <summary>
