@@ -32,6 +32,7 @@
             this.btnSalvar = new System.Windows.Forms.Button();
             this.btnSair = new System.Windows.Forms.Button();
             this.btnHorasExtraDoDia = new System.Windows.Forms.Button();
+            this.btnZerarRegistrosDia = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnBaterPonto
@@ -56,7 +57,7 @@
             // 
             // btnSair
             // 
-            this.btnSair.Location = new System.Drawing.Point(110, 98);
+            this.btnSair.Location = new System.Drawing.Point(111, 128);
             this.btnSair.Name = "btnSair";
             this.btnSair.Size = new System.Drawing.Size(75, 23);
             this.btnSair.TabIndex = 4;
@@ -66,25 +67,38 @@
             // 
             // btnHorasExtraDoDia
             // 
-            this.btnHorasExtraDoDia.Location = new System.Drawing.Point(91, 70);
+            this.btnHorasExtraDoDia.Location = new System.Drawing.Point(102, 70);
             this.btnHorasExtraDoDia.Name = "btnHorasExtraDoDia";
-            this.btnHorasExtraDoDia.Size = new System.Drawing.Size(117, 23);
+            this.btnHorasExtraDoDia.Size = new System.Drawing.Size(95, 23);
             this.btnHorasExtraDoDia.TabIndex = 5;
-            this.btnHorasExtraDoDia.Text = "Horas extra do dia";
+            this.btnHorasExtraDoDia.Text = "Relatório do dia";
             this.btnHorasExtraDoDia.UseVisualStyleBackColor = true;
             this.btnHorasExtraDoDia.Click += new System.EventHandler(this.btnHorasExtrasDoDia_Click);
+            // 
+            // btnZerarRegistrosDia
+            // 
+            this.btnZerarRegistrosDia.Location = new System.Drawing.Point(81, 99);
+            this.btnZerarRegistrosDia.Name = "btnZerarRegistrosDia";
+            this.btnZerarRegistrosDia.Size = new System.Drawing.Size(138, 23);
+            this.btnZerarRegistrosDia.TabIndex = 6;
+            this.btnZerarRegistrosDia.Text = "Zerar registros do dia";
+            this.btnZerarRegistrosDia.UseVisualStyleBackColor = true;
+            this.btnZerarRegistrosDia.Click += new System.EventHandler(this.btnZerarRegistrosDia_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 133);
+            this.ClientSize = new System.Drawing.Size(291, 163);
+            this.Controls.Add(this.btnZerarRegistrosDia);
             this.Controls.Add(this.btnHorasExtraDoDia);
             this.Controls.Add(this.btnSair);
             this.Controls.Add(this.btnSalvar);
             this.Controls.Add(this.btnBaterPonto);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Main";
             this.Text = "Auto ponto";
+            this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
 
         }
@@ -95,6 +109,7 @@
         private System.Windows.Forms.Button btnSalvar;
         private System.Windows.Forms.Button btnSair;
         private System.Windows.Forms.Button btnHorasExtraDoDia;
+        private System.Windows.Forms.Button btnZerarRegistrosDia;
     }
 }
 
