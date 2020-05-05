@@ -156,7 +156,7 @@ namespace MarcadorDePonto.Controllers
             bool blnHorarioErrado = false;
 
             blnHorarioErrado = VerifyAceptedChars(pHorario);
-            
+
             // adiciona 0 na frente da hora se tiver só um número
             if (pHorario.Substring(0, 2).Contains(":"))
             {
@@ -305,7 +305,7 @@ namespace MarcadorDePonto.Controllers
         {
             if (lstPonto.Count < 2)
             {
-                ShowInfoMessageBox("Existe apenas uma hora registrada ainda hoje, registre mais para ","");
+                ShowInfoMessageBox("Existe apenas uma hora registrada ainda hoje, registre mais para ", "");
                 return;
             }
 
@@ -314,7 +314,7 @@ namespace MarcadorDePonto.Controllers
             {
                 intRegistros--;
             }
-            
+
             // Soma todos os minutos extras
             int intSomaMinutosExtras = 0;
             for (int intI = 0; intI < intRegistros; intI += 2)
@@ -378,7 +378,7 @@ namespace MarcadorDePonto.Controllers
                 return SubtrairHoras(objPonto.Horarios[intIndexFimHoraAlmoco - 1], objPonto.Horarios[intIndexFimHoraAlmoco]);
             }
             return 0;
-            
+
         }
 
         /// <summary>
@@ -389,12 +389,18 @@ namespace MarcadorDePonto.Controllers
         public void ExibirRelatorioDoDia()
         {
             StringBuilder stbConteudoMsg = new StringBuilder();
-            stbConteudoMsg.Append("Você possui: " + objPonto.HorasExtras.ToString() + " Horas extras");
-            if (objPonto.MinutosExtras > 0)
-            {
-                stbConteudoMsg.Append("\nVocê possui: " + objPonto.MinutosExtras.ToString() + " Minutos extras");
-            }
-            stbConteudoMsg.Append("\nVocê fez: " + objPonto.MinutosAlmoco.ToString() + " Minutos de almoço");
+
+            stbConteudoMsg.Append("Registros:\n" + MontarHorarioEntradaSaida(objPonto.Horarios));
+
+            stbConteudoMsg.Append("\nHoras extras: " + objPonto.HorasExtras.ToString() + ":");
+            stbConteudoMsg.Append(objPonto.MinutosExtras.ToString() + "h");
+
+            int intHorasAlmoco = (int) (objPonto.MinutosAlmoco / 60);
+            int intMinutosAlmoco = (int) (objPonto.MinutosAlmoco % 60);
+
+            stbConteudoMsg.Append("\nSeu almoço durou: " + intHorasAlmoco.ToString() + ":");
+            stbConteudoMsg.Append(intMinutosAlmoco.ToString() + "h");
+
             if (objPonto.MinutosAlmoco < 60)
             {
                 stbConteudoMsg.Append("\nO almoço deve ser de no minimo 60 minutos.");
@@ -402,8 +408,29 @@ namespace MarcadorDePonto.Controllers
                 stbConteudoMsg.Append("\nO almoço deve ser de no maximo 90 minutos.");
                 stbConteudoMsg.Append("\n12:00 até 13:30 = 90 minutos");
             }
+
             ShowInfoMessageBox(stbConteudoMsg.ToString(), "Horas extras do dia");
         }
+
+        /// <summary>
+        /// Essa função monta uma string com as horas
+        /// no formato "entrada - saida"
+        /// </summary>
+        /// <param name="pArr">Array de horas</param>
+        /// <returns>Retorna um stringBuilder com os dados formatados</returns>
+        public string MontarHorarioEntradaSaida(List<string> pArr)
+        {
+            StringBuilder stbBuilder = new StringBuilder();
+            
+            for (int intI = 0; intI < pArr.Count; intI+=2)
+            {
+                stbBuilder.Append(pArr[intI] + " - " + pArr[intI + 1] + "\n");
+            }
+
+
+            return stbBuilder.ToString();
+        }
+    }
 }
 
 //[
