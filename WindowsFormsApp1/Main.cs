@@ -19,7 +19,7 @@ namespace WindowsFormsApp1
 
         private void btnBaterPonto_Click(object sender, EventArgs e)
         {
-            objController.ShowInputBox("Insira o horario", "Insira a hora de entrada (Ex: 07:42)");
+            objController.InserirHorario();
         }
 
         private void btnSalvar_Click(object sender, EventArgs e)
@@ -42,9 +42,9 @@ namespace WindowsFormsApp1
             objController.InvocarZerarRegistrosDia();
         }
 
-        private void Main_Load(object sender, EventArgs e)
+        private void btnSelecionarAlmoco_Click(object sender, EventArgs e)
         {
-
+            objController.SelecionarAlmoco();
         }
     }
 }

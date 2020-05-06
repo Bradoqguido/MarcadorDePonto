@@ -22,6 +22,11 @@ namespace MarcadorDePonto.Controllers
         private TimeController objTimeController;
 
         /// <summary>
+        /// Registro de ponto atual
+        /// </summary>
+        private Ponto objRegistroPonto = new Ponto();
+
+        /// <summary>
         /// Lê os dados do arquivo json e salva na lista lstPonto.
         /// </summary>
         public void ReadDataFromJson()
@@ -35,7 +40,7 @@ namespace MarcadorDePonto.Controllers
             }
             catch (FileNotFoundException)
             {
-                ShowWarnMessageBox("Não encontramos o arquivo com suas horas :c", "Atenção");
+                MessageBox.Show("Não encontramos o arquivo com suas horas :c", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -44,62 +49,13 @@ namespace MarcadorDePonto.Controllers
         /// utilizando um paramentro para o titulo da janela e outro
         /// para a descrição do a pessoa deve inserir na caixa de texto.
         /// </summary>
-        /// <param name="pTitleText">Titulo da janela</param>
-        /// <param name="pDescText">Descrição</param>
-        public void ShowInputBox(string pTitleText, string pDescText)
+        public void InserirHorario()
         {
-            string strAux = Interaction.InputBox(pDescText, (pTitleText), "");
-
-            // Finaliza a função aqui, caso não tenha nada,
-            // pois o botão cancelar retorna uma string vazia
-            if (strAux.Length == 0)
+            string strAux = Interaction.InputBox("Insira a hora de entrada (Ex: 07:42)", "Insira o horario", "");
+            if (ValidacoesDeEntrada(strAux))
             {
-                return;
+                objTimeController.InserirRegistro(strAux);
             }
-
-            if (strAux.Length < 5)
-            {
-                ShowWarnMessageBox("O registro não foi inserido, pois não é válido!", "Atenção");
-                return;
-            }
-
-            bool blnErrado = objTimeController.ValidarNovoRegistroDeHorario(strAux);
-            if (blnErrado)
-            {
-                ShowWarnMessageBox("O registro não foi inserido, pois não é válido!", "Atenção");
-            }
-
-            bool blnHoraMenorQueAnterior = objTimeController.InserirRegistro(strAux);
-            if (blnHoraMenorQueAnterior)
-            {
-                ShowWarnMessageBox("O registro não foi inserido, pois o horário digitado é menor que o anterior!", "Atenção");
-            }
-        }
-
-        /// <summary>
-        /// Sumarização da função MessageBox:
-        /// Botões: OK,
-        /// Icone: Information,
-        /// Sendo necessário apenas inserir os textos.
-        /// </summary>
-        /// <param name="pText">Conteúdo/Mensagem</param>
-        /// <param name="pTitle">Titulo da janela</param>
-        private void ShowInfoMessageBox(string pText, string pTitle)
-        {
-            MessageBox.Show(pText, pTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        /// <summary>
-        /// Sumarização da função MessageBox:
-        /// Botões: OK,
-        /// Icone: Warning,
-        /// Sendo necessário apenas inserir os textos.
-        /// </summary>
-        /// <param name="pText">Conteúdo/Mensagem</param>
-        /// <param name="pTitle">Titulo da janela</param>
-        private void ShowWarnMessageBox(string pText, string pTitle)
-        {
-            MessageBox.Show(pText, pTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         /// <summary>
@@ -110,7 +66,7 @@ namespace MarcadorDePonto.Controllers
             string strJsonString;
             strJsonString = JsonConvert.SerializeObject(lstRegistrosPonto, Formatting.Indented);
             File.WriteAllText("jsonFileTest.json", strJsonString);
-            ShowInfoMessageBox("Seus registros foram salvos com sucesso!", "Sucesso");
+            MessageBox.Show("Seus registros foram salvos com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -120,52 +76,88 @@ namespace MarcadorDePonto.Controllers
         /// </summary>
         public void ExibirRelatorioDoDia()
         {
-            Ponto objRegistroPonto = objTimeController.GetRegistroDePontoAtual();
+            objRegistroPonto = objTimeController.GetRegistroDePontoAtual();
 
             if (objRegistroPonto.Horarios.Count < 2)
             {
-                ShowInfoMessageBox("Existe apenas uma hora registrada ainda hoje, registre mais pontos, para gerar o relatório do dia!", "Info");
+                MessageBox.Show("Existe apenas uma registro de hoje, registre mais pontos, para gerar o relatório do dia!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             } else
             {
                 objTimeController.SomarHorasDoDia();
                 StringBuilder stbConteudoMsg = new StringBuilder();
 
                 stbConteudoMsg.Append("Registros:\n" + MontarStrComHorariosEntradaEsaida(objRegistroPonto.Horarios));
+                stbConteudoMsg = MontaHorasExtrasRelatorio(stbConteudoMsg);
+                stbConteudoMsg = MontaAlmocoDoRelatorio(stbConteudoMsg);
 
-                stbConteudoMsg.Append("\nHoras extras: " + objRegistroPonto.HorasExtras.ToString() + ":");
-                stbConteudoMsg.Append(Math.Abs(objRegistroPonto.MinutosExtras).ToString() + "h");
-                
-                int intHorasAlmoco = (int)(objRegistroPonto.MinutosAlmoco / 60);
-                int intMinutosAlmoco = (int)(objRegistroPonto.MinutosAlmoco % 60);
-
-                if (intHorasAlmoco.ToString().Length < 2)
-                {
-                    stbConteudoMsg.Append("\nSeu almoço durou: 0" + intHorasAlmoco.ToString() + ":");
-                }
-                else
-                {
-                    stbConteudoMsg.Append("\nSeu almoço durou: " + intHorasAlmoco.ToString() + ":");
-                }
-
-                if (intMinutosAlmoco.ToString().Length < 2)
-                {
-                    stbConteudoMsg.Append("0" + intMinutosAlmoco.ToString() + "h");
-                } else
-                {
-                    stbConteudoMsg.Append(intMinutosAlmoco.ToString() + "h");
-                }
-
-                if (objRegistroPonto.MinutosAlmoco < 60)
-                {
-                    stbConteudoMsg.Append("\nO almoço deve ser de no minimo 60 minutos.");
-                    stbConteudoMsg.Append("\n12:00 até 13:00 = 60 minutos");
-                    stbConteudoMsg.Append("\nO almoço deve ser de no maximo 90 minutos.");
-                    stbConteudoMsg.Append("\n12:00 até 13:30 = 90 minutos");
-                }
-
-                // ShowInfoMessageBox(stbConteudoMsg.ToString(), "Horas extras do dia");
-                ShowWarnMessageBox("Relatório momentaneamente desabilitado!", "Atenção");
+                MessageBox.Show(stbConteudoMsg.ToString(), "Horas extras do dia", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        /// <summary>
+        /// Função para anexar ao relatório diário detalhes sobre as horas extras do usuário.
+        /// </summary>
+        /// <param name="pStbConteudoMsg">Recebe o string builder do relatório</param>
+        /// <returns>Retona uma string contendo o relatório, mais os detalhes das horas extras.</returns>
+        private StringBuilder MontaHorasExtrasRelatorio(StringBuilder pStbConteudoMsg)
+        {
+            pStbConteudoMsg.Append("\nHoras extras: " + objRegistroPonto.HorasExtras.ToString() + ":");
+            pStbConteudoMsg.Append(objRegistroPonto.MinutosExtras.ToString() + "h");
+
+            if (objRegistroPonto.Excedeu71min)
+            {
+                pStbConteudoMsg.Append("\nVocê fez mais que 01:11 horas extras hoje. D:\n");
+            }
+
+            if (objRegistroPonto.Fez6hDireto)
+            {
+                pStbConteudoMsg.Append("\nVocê fez 6 horas seguidas hoje! D:.\n");
+            }
+
+            return pStbConteudoMsg;
+        }
+
+        /// <summary>
+        /// Função para anexar ao relatório diário detalhes sobre o almoço do usuário.
+        /// </summary>
+        /// <param name="pStbConteudoMsg">Recebe o string builder do relatório</param>
+        /// <returns>Retona uma string contendo o relatório, mais os detalhes do almoço.</returns>
+        private StringBuilder MontaAlmocoDoRelatorio(StringBuilder pStbConteudoMsg)
+        {
+            int intHorasAlmoco = (int) (objRegistroPonto.MinutosAlmoco / 60);
+            int intMinutosAlmoco = (int) (objRegistroPonto.MinutosAlmoco % 60);
+
+            if (intHorasAlmoco.ToString().Length < 2)
+            {
+                pStbConteudoMsg.Append("\nSeu almoço durou: 0" + intHorasAlmoco.ToString() + ":");
+            }
+            else
+            {
+                pStbConteudoMsg.Append("\nSeu almoço durou: " + intHorasAlmoco.ToString() + ":");
+            }
+
+            if (intMinutosAlmoco.ToString().Length < 2)
+            {
+                pStbConteudoMsg.Append("0" + intMinutosAlmoco.ToString() + "h");
+            }
+            else
+            {
+                pStbConteudoMsg.Append(intMinutosAlmoco.ToString() + "h");
+            }
+
+            if (objRegistroPonto.MinutosAlmoco <= 60)
+            {
+                pStbConteudoMsg.Append("\nO almoço deve ser de no minímo 60 minutos.");
+                pStbConteudoMsg.Append("\n12:00 até 13:00 = 60 minutos");
+            }
+
+            if (objRegistroPonto.MinutosAlmoco >= 90)
+            {
+                pStbConteudoMsg.Append("\nO almoço deve ser de até 90 minutos.");
+                pStbConteudoMsg.Append("\n12:00 até 13:30 = 90 minutos");
+            }
+
+            return pStbConteudoMsg;
         }
 
         /// <summary>
@@ -180,17 +172,19 @@ namespace MarcadorDePonto.Controllers
 
             int intNRegistros = pArr.Count;
 
-            // Se for impar é retirado um registro
-            if (!(pArr.Count % 2 == 0))
-            {
-                intNRegistros--;
-            }
+            // Reduz 1 do tamanho, deixando em formato de array/list
+            intNRegistros--;
 
             for (int intI = 0; intI < intNRegistros; intI+=2)
             {
                 stbBuilder.Append(pArr[intI] + " - " + pArr[intI + 1] + "\n");
             }
-            
+
+            if (pArr.Count % 2 == 1)
+            {
+                stbBuilder.Append(pArr[intNRegistros] + " - " + "\n");
+            }
+
             return stbBuilder.ToString();
         }
 
@@ -199,18 +193,76 @@ namespace MarcadorDePonto.Controllers
         /// </summary>
         public void InvocarZerarRegistrosDia()
         {
+            objRegistroPonto = objTimeController.GetRegistroDePontoAtual();
             string strAux = Interaction.InputBox("Você tem certeza que deseja apagar TODOS os horários Registrados hoje? (S)Sim / (N)Não\n\nEssa operação não pode ser desfeita!! D:", "Atenção", "");
             
             if (strAux.Contains("S") || strAux.Contains("s"))
             {
                 objTimeController.ZerarRegistrosDia();
-                ShowWarnMessageBox("Horários apagados!", "Atenção");
+                MessageBox.Show("Horários apagados!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 SalvarDadosEmJson();
             } else
             {
-                ShowInfoMessageBox("Os Dados NÃO foram apagados!", "Atenção");
+                MessageBox.Show("Os Dados NÃO foram apagados!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             
+        }
+
+        /// <summary>
+        /// Função para o usuário selecionar o horário de almoço, dentre os horários registrados.
+        /// </summary>
+        public void SelecionarAlmoco()
+        {
+            objRegistroPonto = objTimeController.GetRegistroDePontoAtual();
+            string strResgistrosDeHorarios = MontarStrComHorariosEntradaEsaida(objRegistroPonto.Horarios);
+
+            if (!(strResgistrosDeHorarios.Length > 0))
+            {
+                MessageBox.Show("Você não possui registros o suficiente para selecionar o almoço!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string strInicioAlmoco = Interaction.InputBox("Digite o INÍCIO do seu almoço dentre os horários registrados:\n" + strResgistrosDeHorarios, "Insira o horario de almoço", "");
+            if (!ValidacoesDeEntrada(strInicioAlmoco))
+            {
+                return;
+            }
+
+            string strFimAlmoco = Interaction.InputBox("Digite o FIM do seu almoço dentre os horários registrados:\n" + strResgistrosDeHorarios, "Insira o horario de almoço", "");
+            if (ValidacoesDeEntrada(strFimAlmoco))
+            {
+                objTimeController.DefinirHorarioAlmoco(strInicioAlmoco, strFimAlmoco);
+            }
+        }
+
+        /// <summary>
+        /// Chama uma sequência de validações para o horário registrado.
+        /// </summary>
+        /// <param name="pStrAux">String recebida</param>
+        /// <returns>Retorna um boleano True se passou nas validações e False se não passou.</returns>
+        private bool ValidacoesDeEntrada(string pStrAux)
+        {
+            // Finaliza a função aqui, caso não tenha nada,
+            // pois o botão cancelar retorna uma string vazia
+            if (pStrAux.Length == 0)
+            {
+                return false;
+            }
+
+            if (pStrAux.Length < 5)
+            {
+                MessageBox.Show("O registro não foi inserido, pois o horário não é válido!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            bool blnErrado = objTimeController.ValidarNovoRegistroDeHorario(pStrAux);
+            if (blnErrado)
+            {
+                MessageBox.Show("O registro não foi inserido, pois o horário não é válido!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
         }
     }
 }

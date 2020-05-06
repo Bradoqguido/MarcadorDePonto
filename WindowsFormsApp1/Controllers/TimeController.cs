@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WindowsFormsApp1.Models;
+using System.Windows.Forms;
 
 namespace MarcadorDePonto.Controllers
 {
@@ -187,8 +188,7 @@ namespace MarcadorDePonto.Controllers
         /// será registrado no Json.
         /// </summary>
         /// <param name="pHorario">Variável de tipo string.</param>
-        /// <returns>retorna um booleano, se for True é menor, se não é maior e será registrado.</returns>
-        public bool InserirRegistro(string pHorario)
+        public void InserirRegistro(string pHorario)
         {
             int intRegistrosCount = objRegistroPonto.Horarios.Count;
 
@@ -207,14 +207,14 @@ namespace MarcadorDePonto.Controllers
 
                 if (intUltimoHorario > intHorarioAtual)
                 {
-                    return true;
+                    MessageBox.Show("O registro não foi inserido, pois o horário digitado é menor que o anterior!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 } else
                 {
                     objRegistroPonto.Horarios.Add(pHorario);
                 }
             }
 
-            return false;
+            MessageBox.Show("O registro foi inserido!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -251,9 +251,6 @@ namespace MarcadorDePonto.Controllers
             }
 
             AjusteFinoDeHorario(intSomaMinutosExtras);
-
-            // Pega as horas do almoço
-            objRegistroPonto.MinutosAlmoco = EncontraHorarioAlmoco();
         }
 
         /// <summary>
@@ -275,41 +272,51 @@ namespace MarcadorDePonto.Controllers
                 objRegistroPonto.MinutosExtras = 0;
             }
 
+            // Maximo de hora extra = 71 minutos
+            if (pIntSomaMinutosExtras > 71)
+            {
+                objRegistroPonto.Excedeu71min = true;
+            } else
+            {
+                objRegistroPonto.Excedeu71min = false;
+            }
+
             // Pega as hora horas extras
             objRegistroPonto.HorasExtras = (pIntSomaMinutosExtras / 60);
 
-            // 112 minutos são divisiveis por 60, mas não cabem em uma variável do tipo inteiro
-            // Caso positivo
-            if (pIntSomaMinutosExtras > 0 && pIntSomaMinutosExtras < 120)
+            if (objRegistroPonto.HorasExtras >= 6)
             {
-                pIntSomaMinutosExtras = pIntSomaMinutosExtras - 60; // Remove uma hora dos minutos
-                objRegistroPonto.MinutosExtras = pIntSomaMinutosExtras;
-                objRegistroPonto.HorasExtras += 1; // Adiciona uma hora
+                objRegistroPonto.Fez6hDireto = true;
+            } else
+            {
+                objRegistroPonto.Fez6hDireto = false;
             }
 
-            // Caso negativo
-            if (pIntSomaMinutosExtras > -120 && pIntSomaMinutosExtras < 0)
-            {
-                pIntSomaMinutosExtras = pIntSomaMinutosExtras + 60; // Remove uma hora dos minutos
-                objRegistroPonto.MinutosExtras = (pIntSomaMinutosExtras * -1);
-                objRegistroPonto.HorasExtras -= 1; // Remove uma hora
-            }
+            // Pega os minutos extras
+            objRegistroPonto.MinutosExtras = Math.Abs((pIntSomaMinutosExtras % 60));
         }
 
         /// <summary>
-        /// Encontra o mais próxim ou oúltimo registro após as 12:00
-        /// E o primeiro registro após as 13:00.
+        /// Recebe as horas de inicio e fim do almoço do usuário,
+        /// para saber quanto de almoço ele fez.
         /// </summary>
-        /// <returns>Retorna os minutos de almoço do usuário</returns>
-        private int EncontraHorarioAlmoco()
+        /// <param name="pStrInicio">Início do almoço</param>
+        /// <param name="pStrFim">Fim do almoço</param>
+        public void DefinirHorarioAlmoco(string pStrInicio, string pStrFim)
         {
-            // pega a primeira hora após o almoço
-            int intIndexFimHoraAlmoco = objRegistroPonto.Horarios.FindIndex(e => e.Contains("13:"));
-            if (intIndexFimHoraAlmoco > -1)
+
+            if (objRegistroPonto.Horarios.Contains(pStrInicio)
+                && objRegistroPonto.Horarios.Contains(pStrFim))
             {
-                return SubtrairHoras(objRegistroPonto.Horarios[intIndexFimHoraAlmoco - 1], objRegistroPonto.Horarios[intIndexFimHoraAlmoco]);
+                int intMinutosDeAlmoco = SubtrairHoras(pStrInicio, pStrFim);
+                if (intMinutosDeAlmoco > 0)
+                {
+                    objRegistroPonto.MinutosAlmoco = intMinutosDeAlmoco;
+                    return;
+                }
             }
-            return 0;
+
+            MessageBox.Show("O horário de almoço inserido não é válido ou é negativo! :c", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         /// <summary>
@@ -318,7 +325,18 @@ namespace MarcadorDePonto.Controllers
         public void ZerarRegistrosDia()
         {
             int intHorariosCount = objRegistroPonto.Horarios.Count;
-            objRegistroPonto.Horarios.RemoveRange(0, intHorariosCount);
+            if (intHorariosCount > 0)
+            {
+                objRegistroPonto.Horarios.RemoveRange(0, intHorariosCount);
+                objRegistroPonto.MinutosAlmoco = 0;
+                objRegistroPonto.Excedeu71min = false;
+                objRegistroPonto.Fez6hDireto = false;
+                objRegistroPonto.HorasExtras = 0;
+                objRegistroPonto.MinutosExtras = 0;
+            } else
+            {
+                MessageBox.Show("Não há registros para apagar, insira novos!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

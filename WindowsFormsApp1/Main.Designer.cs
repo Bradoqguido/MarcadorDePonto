@@ -33,63 +33,81 @@
             this.btnSair = new System.Windows.Forms.Button();
             this.btnHorasExtraDoDia = new System.Windows.Forms.Button();
             this.btnZerarRegistrosDia = new System.Windows.Forms.Button();
+            this.btnSelecionarAlmoco = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnBaterPonto
             // 
-            this.btnBaterPonto.Location = new System.Drawing.Point(101, 12);
+            this.btnBaterPonto.BackColor = System.Drawing.SystemColors.Control;
+            this.btnBaterPonto.Location = new System.Drawing.Point(111, 12);
             this.btnBaterPonto.Name = "btnBaterPonto";
             this.btnBaterPonto.Size = new System.Drawing.Size(96, 23);
             this.btnBaterPonto.TabIndex = 1;
             this.btnBaterPonto.Text = "Marcar ponto";
-            this.btnBaterPonto.UseVisualStyleBackColor = true;
+            this.btnBaterPonto.UseVisualStyleBackColor = false;
             this.btnBaterPonto.Click += new System.EventHandler(this.btnBaterPonto_Click);
             // 
             // btnSalvar
             // 
-            this.btnSalvar.Location = new System.Drawing.Point(81, 41);
+            this.btnSalvar.BackColor = System.Drawing.SystemColors.Control;
+            this.btnSalvar.Location = new System.Drawing.Point(12, 99);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(138, 23);
             this.btnSalvar.TabIndex = 3;
             this.btnSalvar.Text = "Salvar em formato JSON";
-            this.btnSalvar.UseVisualStyleBackColor = true;
+            this.btnSalvar.UseVisualStyleBackColor = false;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
             // 
             // btnSair
             // 
-            this.btnSair.Location = new System.Drawing.Point(111, 128);
+            this.btnSair.BackColor = System.Drawing.SystemColors.Control;
+            this.btnSair.Location = new System.Drawing.Point(120, 128);
             this.btnSair.Name = "btnSair";
             this.btnSair.Size = new System.Drawing.Size(75, 23);
             this.btnSair.TabIndex = 4;
             this.btnSair.Text = "Sair";
-            this.btnSair.UseVisualStyleBackColor = true;
+            this.btnSair.UseVisualStyleBackColor = false;
             this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
             // btnHorasExtraDoDia
             // 
-            this.btnHorasExtraDoDia.Location = new System.Drawing.Point(102, 70);
+            this.btnHorasExtraDoDia.BackColor = System.Drawing.SystemColors.Control;
+            this.btnHorasExtraDoDia.Location = new System.Drawing.Point(111, 70);
             this.btnHorasExtraDoDia.Name = "btnHorasExtraDoDia";
             this.btnHorasExtraDoDia.Size = new System.Drawing.Size(95, 23);
             this.btnHorasExtraDoDia.TabIndex = 5;
             this.btnHorasExtraDoDia.Text = "Relatório do dia";
-            this.btnHorasExtraDoDia.UseVisualStyleBackColor = true;
+            this.btnHorasExtraDoDia.UseVisualStyleBackColor = false;
             this.btnHorasExtraDoDia.Click += new System.EventHandler(this.btnHorasExtrasDoDia_Click);
             // 
             // btnZerarRegistrosDia
             // 
-            this.btnZerarRegistrosDia.Location = new System.Drawing.Point(81, 99);
+            this.btnZerarRegistrosDia.BackColor = System.Drawing.SystemColors.Control;
+            this.btnZerarRegistrosDia.Location = new System.Drawing.Point(160, 99);
             this.btnZerarRegistrosDia.Name = "btnZerarRegistrosDia";
             this.btnZerarRegistrosDia.Size = new System.Drawing.Size(138, 23);
             this.btnZerarRegistrosDia.TabIndex = 6;
             this.btnZerarRegistrosDia.Text = "Zerar registros do dia";
-            this.btnZerarRegistrosDia.UseVisualStyleBackColor = true;
+            this.btnZerarRegistrosDia.UseVisualStyleBackColor = false;
             this.btnZerarRegistrosDia.Click += new System.EventHandler(this.btnZerarRegistrosDia_Click);
+            // 
+            // btnSelecionarAlmoco
+            // 
+            this.btnSelecionarAlmoco.BackColor = System.Drawing.SystemColors.Control;
+            this.btnSelecionarAlmoco.Location = new System.Drawing.Point(101, 41);
+            this.btnSelecionarAlmoco.Name = "btnSelecionarAlmoco";
+            this.btnSelecionarAlmoco.Size = new System.Drawing.Size(118, 23);
+            this.btnSelecionarAlmoco.TabIndex = 7;
+            this.btnSelecionarAlmoco.Text = "Selecionar almoço";
+            this.btnSelecionarAlmoco.UseVisualStyleBackColor = false;
+            this.btnSelecionarAlmoco.Click += new System.EventHandler(this.btnSelecionarAlmoco_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 163);
+            this.ClientSize = new System.Drawing.Size(310, 162);
+            this.Controls.Add(this.btnSelecionarAlmoco);
             this.Controls.Add(this.btnZerarRegistrosDia);
             this.Controls.Add(this.btnHorasExtraDoDia);
             this.Controls.Add(this.btnSair);
@@ -98,7 +116,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Main";
             this.Text = "Auto ponto";
-            this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
 
         }
@@ -110,6 +127,7 @@
         private System.Windows.Forms.Button btnSair;
         private System.Windows.Forms.Button btnHorasExtraDoDia;
         private System.Windows.Forms.Button btnZerarRegistrosDia;
+        private System.Windows.Forms.Button btnSelecionarAlmoco;
     }
 }
 
