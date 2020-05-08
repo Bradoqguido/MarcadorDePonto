@@ -2,64 +2,56 @@
 
 ## **Como funciona?**
 
-Atualmente È possivel clicar em "Marcar ponto" para digitar a hora (exatamente como no exemplo mostrado).
+Atualmente √© possivel clicar em "Marcar ponto" para digitar a hora (exatamente como no exemplo mostrado).
+√â possivel visualizar o relat√≥rio do dia trabalhado.
+√â possivel zerar os registros do dia, caso deseje.
+E voc√™ pode selecionar a hora do seu almo√ßo, n√£o ficando preso ao 12:00-13:30.
 
-Ao clicar em salvar a aplicaÁ„o vai salvar um json com os dados preenchidos.
+Ao clicar em salvar a aplica√ß√£o vai salvar um json com os dados preenchidos.
 
-Sempre que a aplicaÁ„o for aberta, ela ir· verificar se existem registros do mesmo dia, se tiver ela ir· salvar os novos pontos, junto aos existentes.
+Sempre que a aplica√ß√£o for aberta, ela ir√° verificar se existem registros do mesmo dia, se tiver ela ir√° salvar os novos pontos, junto aos existentes.
 
 ## **User Story**
 
-- [x]  A aplicaÁ„o deve ter interface gr·fica.
-- [x]  Deve possuir botıes para sair da aplicaÁ„o, salvar os dados, inserir dados.
-- [x]  A aplicaÁ„o deve possibilitar salvar v·rias horas em um mesmo dia.
-- [x]  Deve ser possÌvel salvar os dados preenchidos em um json, para leitura prÈvia.
-- [x]  Deve ser possÌvel buscar no json o indÌce que contem os dados de hoje.
-- [x]  Deve ser possÌvel adicionar novos registros junto aos salvos hoje, a qualquer momento do dia.
-- [x]  Verificar se a hora digitada pelo usu·rio È compatÌvel com o formato Hh:Mm.
-- [x]  A aplicaÁ„o deve ter uma lista com os caracteres aceitos.
-- [x]  A aplicaÁ„o deve exibir uma janela possibilitando o usu·rio inserir dados.
-- [x]  O usu·rio pode cancelar a aÁ„o de inserir uma hora.
-- [x]  Deve ser possÌvel ler os dados preenchidos em um json.
-- [x]  Precisa ter uma funÁ„o para somar as horas extras.
-- [x]  Exibir as horas extras do dia.
-- [x]  O usu·rio pode zerar as horas do dia.
-- [x]  Ao tentar salvar os registros do dia, deve ser possÌvel cancelar a operaÁ„o (caso n„o tenham registros).
-- [x]  Nos registros de hora, sÛ podem ser aceitos os caracteres que compıem alguma hora, Ex: 14:23/00:34/23:00.
-- [x]  SÛ pode registrar novos hor·rios se forem maiores que o anterior.
-- [x]  N„o podem existir horas negativas.
-- [x]  O usu·rio n„o pode fazer mais do que 1:11h de hora extra por dia, exibir mensagem de erro.
-- [x]  O usu·rio n„o pode fazer mais do que 6h seguidas de trabalho.
-- [x]  O usu·rio n„o pode fazer mais do que 90 minutos/ 1:30h de almoÁo.
-- [x]  O usu·rio n„o pode fazer menos que 60 minutos/ 1h de almoÁo.
-- [x]  N„o pode mostrar minutos negativos no relatÛrio, apenas o hor·rio no geral seja negativo ou n„o.
-- [x]  A aplicaÁ„o deve ter atalhos r·pidos.
-- [x]  A aplicaÁ„o precisa ter Ìcones.
-- [x]  Criar um relatÛrio mensal.
-- [x]  O usu·rio pode apagar todos os registros inseridos.
-- [x]  Mostrar o relatÛrio di·rio sempre que o usu·rio inserir um valor.
-- [x]  Mostrar pontos marcados (lista de horas) sempre que o usu·rio inserir um registro.
-- [x]  Mostrar mensagem com o saldo total de horas.
-- [ ]  Mostrar que horas o usu·rio poderia sair.
+- [ ]  A aplica√ß√£o deve ter interface gr√°fica.
+- [ ]  Deve possuir bot√µes para sair da aplica√ß√£o, salvar os dados, inserir dados.
+- [ ]  A aplica√ß√£o deve possibilitar salvar v√°rias horas em um mesmo dia.
+- [ ]  Deve ser poss√≠vel salvar os dados preenchidos em um json, para leitura pr√©via.
+- [ ]  Deve ser poss√≠vel buscar no json o ind√≠ce que contem os dados de hoje.
+- [ ]  Deve ser poss√≠vel adicionar novos registros junto aos salvos hoje, a qualquer momento do dia.
+- [ ]  Verificar se a hora digitada pelo usu√°rio √© compat√≠vel com o formato Hh:Mm.
+- [ ]  A aplica√ß√£o deve ter uma lista com os caracteres aceitos.
+- [ ]  A aplica√ß√£o deve exibir uma janela possibilitando o usu√°rio inserir dados.
+- [ ]  O usu√°rio pode cancelar a a√ß√£o de inserir uma hora.
+- [ ]  Deve ser poss√≠vel ler os dados preenchidos em um json.
+- [ ]  Precisa ter uma fun√ß√£o para somar as horas extras.
+- [ ]  Exibir as horas extras do dia.
+- [ ]  O usu√°rio pode zerar as horas do dia.
+- [ ]  Ao tentar salvar os registros do dia, deve ser poss√≠vel cancelar a opera√ß√£o (caso n√£o tenham registros).
+- [ ]  Nos registros de hora, s√≥ podem ser aceitos os caracteres que comp√µem alguma hora, Ex: 14:23/00:34/23:00.
+- [ ]  S√≥ pode registrar novos hor√°rios se forem maiores que o anterior.
+- [ ]  N√£o podem existir horas negativas.
+- [ ]  O usu√°rio n√£o pode fazer mais do que 1:11h de hora extra por dia, exibir mensagem de erro.
+- [ ]  O usu√°rio n√£o pode fazer mais do que 6h seguidas de trabalho.
+- [ ]  O usu√°rio n√£o pode fazer mais do que 90 minutos/ 1:30h de almo√ßo.
+- [ ]  O usu√°rio n√£o pode fazer menos que 60 minutos/ 1h de almo√ßo.
+- [ ]  N√£o pode mostrar minutos negativos no relat√≥rio, apenas o hor√°rio no geral seja negativo ou n√£o.
 
-## SequÍncia de funÁıes implementadas
+## Sequ√™ncia de fun√ß√µes implementadas
 
 Classe Controller:
 
 - private void ReadDadosDoJson();
-- public bool InserirHorario(string pStrInput);
-- public bool ValidacoesDeEntrada(string pStrAux);
-- public void SalvarDadosEmJson();
-- public string ExibirRelatorioDoDia();
-- public StringBuilder MontaHorasExtrasRelatorio(StringBuilder pStbConteudoMsg, Ponto pPonto);
-- private StringBuilder MontaAlmocoDoRelatorio(StringBuilder pStbConteudoMsg, Ponto pPonto);
-- public string MontarStrComHorariosEntradaEsaida(List<string> pArr);
-- public bool InvocarZerarRegistrosDia(string pStrInput);
-- public bool ApagarTodosOsRegistros();
-- public bool SelecionarAlmoco(string pStrInicioAlmoco, string pStrFimAlmoco);
-- public List<string> GetHorarios();
-- public string ExibirRelatorioMensal();
-- public string GetSaldoTotal();
+- public void ShowInputBox(string pTituloText, string pDescricaoText);
+- private void ShowInfoMessageBox(string pTituloText, string pDescricaoText);
+- private void ShowWarnMessageBox(string pText, string pTitle);
+- public salvarDadosEmJson();
+- public void ExibirRelatorioDoDia();
+- private StringBuilder MontaHorasExtrasRelatorio(StringBuilder pStbConteudoMsg)
+- private StringBuilder MontaAlmocoDoRelatorio(StringBuilder pStbConteudoMsg)
+- private string MontarStrComHorariosEntradaEsaida(List<string> pArr);
+- public void SelecionarAlmoco();
+- private void ValidacoesDeEntrada(string pStrAux)
 
 Classe TimeController:
 
@@ -76,4 +68,3 @@ Classe TimeController:
 - private void SomarHorasDoDia();
 - private void AjusteFinoDeHorario(int pIntSomaMinutosExtras);
 - private int EncontraHorarioAlmoco();
-- public bool ZerarRegistrosDia();
