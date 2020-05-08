@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using WindowsFormsApp1.Models;
-using System.Windows.Forms;
 
 namespace MarcadorDePonto.Controllers
 {
@@ -10,7 +9,7 @@ namespace MarcadorDePonto.Controllers
         /// <summary>
         /// Mensagem pré-fixada pedindo que o usuário digite novamente.
         /// </summary>
-        private string strMsgDeExemplo = "Insira novamente a horario como o exemplo (Ex: 07:42)";
+        // private string strMsgDeExemplo = "Insira novamente a horario como o exemplo (Ex: 07:42)";
 
         /// <summary>
         /// Lista do tipo ponto.
@@ -21,7 +20,7 @@ namespace MarcadorDePonto.Controllers
         /// Objeto do tipo Ponto.
         /// </summary>
         private Ponto objRegistroPonto = new Ponto();
-        
+
         /// <summary>
         /// Lista string de caracteres liberados, ou seja:
         /// 07:42 - 12:00 = 258 minutos,
@@ -29,8 +28,8 @@ namespace MarcadorDePonto.Controllers
         /// 12:00 - 13:30 = 90 minutos,
         /// 13:30 - 18:00 = 270 minutos.
         /// </summary>
-        private static int[] intMinutosEntreHorasDeTrabalho = { 258, 270 };
-        
+        private readonly static int[] intMinutosEntreHorasDeTrabalho = { 258, 270 };
+
         /// <summary>
         /// Lista string de caracteres liberados.
         /// </summary>
@@ -142,45 +141,45 @@ namespace MarcadorDePonto.Controllers
         /// Função para verificar a disposição dos caracteres na hora.
         /// </summary>
         /// <param name="pHorario">Horario que o usuário digitou</param>
-        /// <returns>Retorna um Booelan</returns>
+        /// <returns>Retorna um Booelan true caso passe pelos testes, false caso não passe </returns>
         private bool VerificarFormatoDoHorario(string pHorario)
         {
             // verifica hora
             int intHora = 0;
-            if (!int.TryParse(pHorario.Substring(0, 2), out intHora))
+            if (int.TryParse(pHorario.Substring(0, 2), out intHora))
             {
-                return true;
+                return false;
             }
 
             if (intHora > 23 || intHora < 0)
             {
-                return true;
+                return false;
             }
 
             // verifica minutos
             int intMinuto = 0;
             if (!int.TryParse(pHorario.Substring(3, 2), out intMinuto))
             {
-                return true;
+                return false;
             }
 
             if (intMinuto > 59 || intMinuto < 0)
             {
-                return true;
+                return false;
             }
 
             // verifica o tamanho do horario
             if (pHorario.Length > 5)
             {
-                return true;
+                return false;
             }
 
             if (pHorario.Contains("-0") || pHorario.Contains("+0"))
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -188,7 +187,8 @@ namespace MarcadorDePonto.Controllers
         /// será registrado no Json.
         /// </summary>
         /// <param name="pHorario">Variável de tipo string.</param>
-        public void InserirRegistro(string pHorario)
+        /// <returns>Retorna True para caso passe nas validações e false caso contrário.</returns>
+        public bool InserirRegistro(string pHorario)
         {
             int intRegistrosCount = objRegistroPonto.Horarios.Count;
 
@@ -198,7 +198,7 @@ namespace MarcadorDePonto.Controllers
             } else
             {
                 string strUltimaHora = objRegistroPonto.Horarios[intRegistrosCount - 1];
-                
+
                 int intUltimoHorario = 0;
                 int.TryParse(strUltimaHora.Remove(2, 1), out intUltimoHorario);
 
@@ -207,14 +207,14 @@ namespace MarcadorDePonto.Controllers
 
                 if (intUltimoHorario > intHorarioAtual)
                 {
-                    MessageBox.Show("O registro não foi inserido, pois o horário digitado é menor que o anterior!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
                 } else
                 {
                     objRegistroPonto.Horarios.Add(pHorario);
                 }
             }
 
-            MessageBox.Show("O registro foi inserido!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return true;
         }
 
         /// <summary>
@@ -233,9 +233,10 @@ namespace MarcadorDePonto.Controllers
         /// <summary>
         /// Soma as horas extras do dia.
         /// </summary>
-        public void SomarHorasDoDia()
+        /// <param name="pPonto">Recebe o objeto ponto.</param>
+        public void SomarHorasDoDia(Ponto pPonto)
         {
-            int intRegistros = objRegistroPonto.Horarios.Count;
+            int intRegistros = pPonto.Horarios.Count;
 
             // Se for impar é retirado um registro
             if (!(intRegistros % 2 == 0))
@@ -247,82 +248,80 @@ namespace MarcadorDePonto.Controllers
             int intSomaMinutosExtras = 0;
             for (int intI = 0; intI < intRegistros; intI += 2)
             {
-                intSomaMinutosExtras += SubtrairHoras(objRegistroPonto.Horarios[intI].ToString(), objRegistroPonto.Horarios[intI + 1].ToString());
+                intSomaMinutosExtras += SubtrairHoras(pPonto.Horarios[intI].ToString(), pPonto.Horarios[intI + 1].ToString());
             }
 
-            AjusteFinoDeHorario(intSomaMinutosExtras);
+            AjusteFinoDeHorario(intSomaMinutosExtras, pPonto);
         }
 
         /// <summary>
         /// Ajusta as horas, subtraindo as horas restantes da variável
         /// </summary>
         /// <param name="pIntSomaMinutosExtras">Variável do tipo inteiro</param>
-        private void AjusteFinoDeHorario(int pIntSomaMinutosExtras)
+        /// <param name="pPonto">Recebe o objeto ponto.</param>
+        private void AjusteFinoDeHorario(int pIntSomaMinutosExtras, Ponto pPonto)
         {
             // Remove as horas de trabalho normais (528 minutos)
             if (pIntSomaMinutosExtras > 0)
             {
-                objRegistroPonto.MinutosExtras = pIntSomaMinutosExtras -= 528;
+                pPonto.MinutosExtras = pIntSomaMinutosExtras -= 528;
             }
 
             // Trata os 10 minutos de sobra
             if (pIntSomaMinutosExtras >= -10 && pIntSomaMinutosExtras <= 10)
             {
                 pIntSomaMinutosExtras = 0;
-                objRegistroPonto.MinutosExtras = 0;
+                pPonto.MinutosExtras = 0;
             }
 
             // Maximo de hora extra = 71 minutos
             if (pIntSomaMinutosExtras > 71)
             {
-                objRegistroPonto.Excedeu71min = true;
+                pPonto.Excedeu71min = true;
             } else
             {
-                objRegistroPonto.Excedeu71min = false;
+                pPonto.Excedeu71min = false;
             }
 
             // Pega as hora horas extras
-            objRegistroPonto.HorasExtras = (pIntSomaMinutosExtras / 60);
+            pPonto.HorasExtras = (pIntSomaMinutosExtras / 60);
 
-            if (objRegistroPonto.HorasExtras >= 6)
+            if (pPonto.HorasExtras >= 6)
             {
-                objRegistroPonto.Fez6hDireto = true;
+                pPonto.Fez6hDireto = true;
             } else
             {
-                objRegistroPonto.Fez6hDireto = false;
+                pPonto.Fez6hDireto = false;
             }
 
             // Pega os minutos extras
-            objRegistroPonto.MinutosExtras = Math.Abs((pIntSomaMinutosExtras % 60));
+            pPonto.MinutosExtras = Math.Abs((pIntSomaMinutosExtras % 60));
         }
 
         /// <summary>
         /// Recebe as horas de inicio e fim do almoço do usuário,
         /// para saber quanto de almoço ele fez.
         /// </summary>
-        /// <param name="pStrInicio">Início do almoço</param>
-        /// <param name="pStrFim">Fim do almoço</param>
-        public void DefinirHorarioAlmoco(string pStrInicio, string pStrFim)
+        /// <param name="pStrInicio">Início do almoço.</param>
+        /// <param name="pStrFim">Fim do almoço.</param>
+        /// <returns>Retorna um booleano, True para sucesso e False caso contrário.</returns>
+        public bool DefinirHorarioAlmoco(string pStrInicio, string pStrFim)
         {
-
-            if (objRegistroPonto.Horarios.Contains(pStrInicio)
-                && objRegistroPonto.Horarios.Contains(pStrFim))
+            int intMinutosDeAlmoco = SubtrairHoras(pStrInicio, pStrFim);
+            if (intMinutosDeAlmoco > 0)
             {
-                int intMinutosDeAlmoco = SubtrairHoras(pStrInicio, pStrFim);
-                if (intMinutosDeAlmoco > 0)
-                {
-                    objRegistroPonto.MinutosAlmoco = intMinutosDeAlmoco;
-                    return;
-                }
+                objRegistroPonto.MinutosAlmoco = intMinutosDeAlmoco;
+                return true;
             }
 
-            MessageBox.Show("O horário de almoço inserido não é válido ou é negativo! :c", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
         }
 
         /// <summary>
         /// Zera os registros do dia.
         /// </summary>
-        public void ZerarRegistrosDia()
+        /// <returns>Retorna True se eliminar os registros e false caso não tenha registros.</returns>
+        public bool ZerarRegistrosDia()
         {
             int intHorariosCount = objRegistroPonto.Horarios.Count;
             if (intHorariosCount > 0)
@@ -333,10 +332,37 @@ namespace MarcadorDePonto.Controllers
                 objRegistroPonto.Fez6hDireto = false;
                 objRegistroPonto.HorasExtras = 0;
                 objRegistroPonto.MinutosExtras = 0;
+                return true;
             } else
             {
-                MessageBox.Show("Não há registros para apagar, insira novos!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
+        }
+
+        /// <summary>
+        /// Função para descobrir que horas o usuário pode sair.
+        /// </summary>
+        /// <param name="pPonto">Recebe o registro de ponto que o usuário está usando.</param>
+        /// <returns>Retorna uma string contendo a hora:minutos que o usuário poderia sair.</returns>
+        public string HoraDeSaida(Ponto pPonto)
+        {
+            if (pPonto.HorasExtras == 0 && pPonto.MinutosExtras == 0)
+            {
+                return "";
+            }
+
+            DateTime dtaUltimoPonto = DateTime.Parse(pPonto.Horarios[pPonto.Horarios.Count - 1]);
+            DateTime dtaHorasFaltantes = DateTime.Parse(Math.Abs(pPonto.HorasExtras) + ":" + pPonto.MinutosExtras);
+
+            DateTime dtaHoraDeSaida = dtaUltimoPonto.AddHours(dtaHorasFaltantes.Hour);
+            dtaHoraDeSaida.AddMinutes(dtaHorasFaltantes.Minute);
+
+            if (dtaHoraDeSaida.Hour < 17 || dtaHoraDeSaida.Minute < 40)
+            {
+                return "";
+            }
+
+            return "\n\nVocê poderá sair as: " + dtaHoraDeSaida.ToShortTimeString() + "h";
         }
     }
 }

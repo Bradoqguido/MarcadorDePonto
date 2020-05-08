@@ -1,0 +1,8 @@
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\MarcadorDePonto.RegraNegocio\bin\Debug\MarcadorDePonto.RegraNegocio.dll
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\MarcadorDePonto.RegraNegocio\bin\Debug\MarcadorDePonto.RegraNegocio.pdb
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\MarcadorDePonto.RegraNegocio\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\MarcadorDePonto.RegraNegocio\obj\Debug\MarcadorDePonto.RegraNegocio.csproj.CoreCompileInputs.cache
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\MarcadorDePonto.RegraNegocio\obj\Debug\MarcadorDePonto.RegraNegocio.csproj.CopyComplete
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\MarcadorDePonto.RegraNegocio\obj\Debug\MarcadorDePonto.RegraNegocio.dll
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\MarcadorDePonto.RegraNegocio\obj\Debug\MarcadorDePonto.RegraNegocio.pdb
+C:\Users\Jeferson\source\repos\WindowsFormsApp1\MarcadorDePonto.RegraNegocio\obj\Debug\MarcadorDePonto.RegraNegocio.csprojAssemblyReference.cache

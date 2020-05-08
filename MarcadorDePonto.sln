@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.1082
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarcadorDePonto", "WindowsFormsApp1\MarcadorDePonto.csproj", "{5A61F19E-B8AC-4F93-9338-778F9C24CF26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarcadorDePonto.RegraNegocio", "MarcadorDePonto.RegraNegocio\MarcadorDePonto.RegraNegocio.csproj", "{785E13F3-388E-4501-933E-BF62D91BA1FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5A61F19E-B8AC-4F93-9338-778F9C24CF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A61F19E-B8AC-4F93-9338-778F9C24CF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A61F19E-B8AC-4F93-9338-778F9C24CF26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{785E13F3-388E-4501-933E-BF62D91BA1FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{785E13F3-388E-4501-933E-BF62D91BA1FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{785E13F3-388E-4501-933E-BF62D91BA1FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{785E13F3-388E-4501-933E-BF62D91BA1FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
